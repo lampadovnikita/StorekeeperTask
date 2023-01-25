@@ -16,26 +16,26 @@ func NewPGStorage(pool *pgxpool.Pool) *PGStorage {
 }
 
 func (s *PGStorage) GetGatheringInfo(orderIDs []int) (d []data.GatheringInfo, err error) {
-	q := `SELECT r.name as rack_name, p.name as product_name, p.id as product_id, o.id as order_id, o.amount,
+	q := `SELECT r.name AS rack_name, p.name AS product_name, p.id AS product_id, o.id AS order_id, o.amount,
 			  (SELECT array_agg(rks.name)
 	 			  FROM storage
-	 				  JOIN racks as rks
+	 				  JOIN racks AS rks
 	 					  ON storage.rack_id = rks.id
 	 			  WHERE product_id = s.product_id AND
 	 		  		    is_rack_primary = false
-		      ) as additional_racks
-		      FROM orders as o 
-			  	  JOIN products as p
+		      ) AS additional_racks
+		      FROM orders AS o 
+			  	  JOIN products AS p
 				  	  ON o.product_id = p.id
-			  	  JOIN storage as s
+			  	  JOIN storage AS s
 				  	  ON s.product_id = p.id
-			  	  JOIN racks as r
+			  	  JOIN racks AS r
 				  	  ON s.rack_id = r.id
-		  	  WHERE o.id in (10, 11, 14, 15) AND
-		  	  	  is_rack_primary = true
+		  	  WHERE o.id = ANY($1) AND
+		  	  	    is_rack_primary = true
 		  	  ORDER BY r.id`
 
-	rows, err := s.pool.Query(context.Background(), q)
+	rows, err := s.pool.Query(context.Background(), q, orderIDs)
 	if err != nil {
 		return nil, err
 	}
