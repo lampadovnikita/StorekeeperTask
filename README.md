@@ -27,7 +27,7 @@ SELECT r.name AS rack_name, p.name AS product_name, p.id AS product_id, o.id AS 
 	ORDER BY r.id
 ```
 
-## Запросы создание таблиц
+## Запросы на создание таблиц
 ```sql
 CREATE TABLE IF NOT EXISTS products (
 	id INT PRIMARY KEY,
