@@ -81,13 +81,13 @@ func getOrderIDs() ([]int, error) {
 		return nil, notEnoughArgsError
 	}
 
-	orderIDs := make([]int, 0)
-	for i, arg := range arguments {
-		if i == 0 {
-			continue
-		}
+	strInput := arguments[1]
 
-		orderID, err := strconv.Atoi(arg)
+	orderIDStrings := strings.Split(strInput, ",")
+
+	orderIDs := make([]int, 0, len(orderIDStrings))
+	for _, orderStr := range orderIDStrings {
+		orderID, err := strconv.Atoi(orderStr)
 		if (err != nil) || (orderID < 0) {
 			continue
 		}

@@ -10,7 +10,7 @@
             "request": "launch",
             "mode": "auto",
             "program": "${workspaceFolder}/cmd",
-            "args": ["10", "11", "14", "15"]
+            "args": ["10,11,14,15",]
         }
     ]
 }
