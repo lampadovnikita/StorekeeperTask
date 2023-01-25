@@ -6,8 +6,10 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+	"strings"
 
 	"github.com/lampadovnikita/StorekeeperTask/pkg/config"
+	"github.com/lampadovnikita/StorekeeperTask/pkg/data"
 	"github.com/lampadovnikita/StorekeeperTask/pkg/database"
 )
 
@@ -44,7 +46,33 @@ func main() {
 		panic(err)
 	}
 
-	fmt.Println(gatheringInfo)
+	printGatheringInfo(orderIDs, gatheringInfo)
+}
+
+func printGatheringInfo(orderIDs []int, info []data.GatheringInfo) {
+	fmt.Println("=+=+=+=")
+
+	ordersStr := strings.Replace(strings.Trim(fmt.Sprint(orderIDs), "[]"), " ", ",", -1)
+	fmt.Println("Страница сборки заказов", ordersStr)
+	fmt.Println()
+
+	var prevRackName string
+	for _, elem := range info {
+		if prevRackName != elem.RackName {
+			prevRackName = elem.RackName
+
+			fmt.Println("===Стеллаж", elem.RackName)
+		}
+
+		fmt.Printf("%s (id=%d)\n", elem.ProductName, elem.ProductID)
+		fmt.Printf("заказ %d, %d шт\n", elem.OrderID, elem.Amount)
+
+		if len(elem.AdditionalRacks) > 0 {
+			fmt.Println("доп стеллаж:", strings.Join(elem.AdditionalRacks, ","))
+		}
+
+		fmt.Println()
+	}
 }
 
 func getOrderIDs() ([]int, error) {
