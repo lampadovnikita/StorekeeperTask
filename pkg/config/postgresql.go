@@ -15,7 +15,6 @@ type PGConfig struct {
 }
 
 func GetPGConfig() (pgcfg *PGConfig, err error) {
-	// TODO: посмотреть, что можно сделать с путём к файлу
 	yamlFile, err := ioutil.ReadFile("../config/postgresql.yaml")
 	if err != nil {
 		return nil, err
