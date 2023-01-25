@@ -1,6 +1,6 @@
 # StorekeeperTask
 ## Примерная структура таблиц
-<img src="/repository_resources/tables.png"  width="710" height="400">  
+<img src="/repository_resources/tables.png"  width="610" height="400">  
 
 ## Примеры работы программы
 <img src="/repository_resources/example1.png"  width="410" height="400">  
