@@ -15,7 +15,7 @@ func NewPGStorage(pool *pgxpool.Pool) *PGStorage {
 	return &PGStorage{pool: pool}
 }
 
-func (s *PGStorage) GetGatheringInfo(orderIDs []int) (d []data.GatheringInfo, err error) {
+func (s *PGStorage) GetGatheringInfo(orderIDs []int) (gi []data.GatheringInfo, err error) {
 	q := `SELECT r.name AS rack_name, p.name AS product_name, p.id AS product_id, o.id AS order_id, o.amount,
 			  (SELECT array_agg(rks.name)
 	 			  FROM storage
@@ -50,11 +50,11 @@ func (s *PGStorage) GetGatheringInfo(orderIDs []int) (d []data.GatheringInfo, er
 			return nil, err
 		}
 
-		d = append(d, gathInfo)
+		gi = append(gi, gathInfo)
 	}
 	if err = rows.Err(); err != nil {
 		return nil, err
 	}
 
-	return d, nil
+	return gi, nil
 }
